@@ -59,7 +59,7 @@ form.addEventListener("submit", function(event) {
 
         name: document.getElementById("name").value,
         age: document.getElementById("age").value,
-        gender: document.getElementById("gender").value,
+        gender: document.querySelector('input[name="gender"]:checked').value,
         phone: document.getElementById("phone").value,
         email: document.getElementById("email").value
 
@@ -115,14 +115,27 @@ form.addEventListener("submit", function(event) {
     })
     .then(data => {
 
-        alert("Student saved successfully!");
+    if (editingId === null) {
 
-        form.reset();
-        editingId = null;
+        alert("Student registered successfully!");
 
-        getStudents();
+    } else {
 
-    })
+        alert("Student details updated successfully!");
+
+    }
+
+    form.reset();
+
+    editingId = null;
+
+    document.getElementById("submitButton").innerText = "Register Student";
+
+    document.getElementById("cancelButton").style.display = "none";
+
+    getStudents();
+
+})
     .catch(error => {
 
         alert(error.message);
@@ -140,11 +153,16 @@ function editStudent(id) {
 
         document.getElementById("name").value = student.name;
         document.getElementById("age").value = student.age;
-        document.getElementById("gender").value = student.gender;
+       document.getElementById("male").checked = student.gender === "Male";
+       document.getElementById("female").checked = student.gender === "Female";
+       document.getElementById("other").checked = student.gender === "Other";
         document.getElementById("phone").value = student.phone;
         document.getElementById("email").value = student.email;
 
         editingId = id;
+        document.getElementById("submitButton").innerText = "Update Student";
+
+document.getElementById("cancelButton").style.display = "inline-block";
 
     }
 }
@@ -185,4 +203,31 @@ document.getElementById("search").addEventListener("input", function() {
 });
 
 // Load students when page opens
+// Clear form
+// Clear form
+function clearForm() {
+
+    form.reset();
+
+    editingId = null;
+
+    document.getElementById("submitButton").innerText = "Register Student";
+
+    document.getElementById("cancelButton").style.display = "none";
+
+}
+
+// Cancel editing
+function cancelEdit() {
+
+    form.reset();
+
+    editingId = null;
+
+    document.getElementById("submitButton").innerText = "Register Student";
+
+    document.getElementById("cancelButton").style.display = "none";
+
+}
+
 getStudents();
